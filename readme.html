@@ -385,30 +385,6 @@
             font-weight: 400;
         }
 
-        .integration-notice {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 16px;
-            padding: 20px;
-            margin-top: 40px;
-            max-width: 500px;
-            opacity: 0;
-            animation: slideUp 1s ease-out 4s forwards;
-        }
-
-        .integration-notice-title {
-            color: #4ecdc4;
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin-bottom: 8px;
-        }
-
-        .integration-notice-text {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
         @keyframes slideUp {
             from {
                 opacity: 0;
@@ -558,8 +534,11 @@
 
         <div class="cta-section">
             <!-- Simple Formspree form - emails go directly to your inbox -->
-            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="email-form" id="emailForm">
+            <form action="https://formspree.io/f/mgvzaydb" method="POST" class="email-form" id="emailForm">
                 <input type="email" name="email" class="email-input" placeholder="Enter your email for early access & beta invites" id="emailInput" required>
+                <!-- Basic spam protection -->
+                <input type="hidden" name="_subject" value="HIITask Beta Signup - New Email!" />
+                <input type="text" name="_gotcha" style="display:none" />
                 <button type="submit" class="notify-btn">Get Notified</button>
             </form>
             <p class="social-proof">
@@ -567,10 +546,7 @@
             </p>
         </div>
 
-        <div class="integration-notice">
-            <div class="integration-notice-title">📧 Formspree Integration</div>
-            <div class="integration-notice-text">Replace YOUR_FORM_ID with your Formspree endpoint. All emails will be sent directly to your inbox. Set up in 2 minutes!</div>
-        </div>
+
     </div>
 
     <script>
@@ -602,36 +578,16 @@
 
         // Form submission handling
         document.getElementById('emailForm').addEventListener('submit', function(e) {
-            // If Formspree is not set up yet, use localStorage for demo
-            const formAction = this.action;
-            if (formAction.includes('YOUR_FORM_ID')) {
-                e.preventDefault();
-                const email = document.getElementById('emailInput').value;
-                if (email && email.includes('@')) {
-                    const emails = JSON.parse(localStorage.getItem('hiitask_emails') || '[]');
-                    if (!emails.includes(email)) {
-                        emails.push(email);
-                        localStorage.setItem('hiitask_emails', JSON.stringify(emails));
-                        
-                        alert('🎉 Thanks! You\'ll be the first to know when HIITask launches!\n\n(Demo mode - replace YOUR_FORM_ID with your Formspree endpoint)');
-                        document.getElementById('emailInput').value = '';
-                        
-                        const proofEl = document.querySelector('.social-proof');
-                        const currentNum = parseInt(proofEl.textContent.match(/\d+/)[0]);
-                        proofEl.innerHTML = `🔥 Join ${currentNum + 1}+ productivity enthusiasts waiting for launch`;
-                    } else {
-                        alert('You\'re already signed up! We\'ll notify you when we launch.');
-                    }
-                } else {
-                    alert('Please enter a valid email address!');
-                }
-            } else {
-                // Formspree will handle the submission
-                // Show immediate feedback
+            // Let Formspree handle the submission naturally
+            // Show immediate user feedback
+            const email = document.getElementById('emailInput').value;
+            if (email && email.includes('@')) {
+                // Update social proof immediately for better UX
                 setTimeout(() => {
-                    alert('🎉 Thanks! You\'ll be the first to know when HIITask launches!');
-                    document.getElementById('emailInput').value = '';
-                }, 100);
+                    const proofEl = document.querySelector('.social-proof');
+                    const currentNum = parseInt(proofEl.textContent.match(/\d+/)[0]);
+                    proofEl.innerHTML = `🔥 Join ${currentNum + 1}+ productivity enthusiasts waiting for launch`;
+                }, 500);
             }
         });
 
