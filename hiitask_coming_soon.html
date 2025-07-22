@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIITask - Your Money, Your Tasks, Your Victory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3b73c4 100%);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Subtle animated background elements */
+        .bg-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .bg-circle:nth-child(1) { 
+            width: 200px; height: 200px; 
+            left: 10%; top: 20%;
+            animation-delay: 0s; 
+        }
+        .bg-circle:nth-child(2) { 
+            width: 150px; height: 150px; 
+            left: 80%; top: 10%;
+            animation-delay: 2s; 
+        }
+        .bg-circle:nth-child(3) { 
+            width: 100px; height: 100px; 
+            left: 70%; top: 70%;
+            animation-delay: 4s; 
+        }
+        .bg-circle:nth-child(4) { 
+            width: 250px; height: 250px; 
+            left: 5%; top: 60%;
+            animation-delay: 6s; 
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); opacity: 0.3; }
+            50% { transform: translateY(-20px) scale(1.1); opacity: 0.5; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .tagline {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            color: #e8f4fd;
+            font-weight: 500;
+            margin-bottom: 15px;
+            opacity: 0;
+            animation: slideUp 1s ease-out 0.5s forwards;
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 400;
+            margin-bottom: 50px;
+            max-width: 700px;
+            line-height: 1.6;
+            opacity: 0;
+            animation: slideUp 1s ease-out 1s forwards;
+        }
+
+        .core-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin: 50px 0;
+            max-width: 1100px;
+            width: 100%;
+            opacity: 0;
+            animation: slideUp 1s ease-out 1.5s forwards;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 35px 25px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b35, #f7931e, #4ecdc4);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+            filter: grayscale(0);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+        }
+
+        .feature-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .feature-desc {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        .advanced-features {
+            max-width: 1200px;
+            width: 100%;
+            margin: 60px 0;
+            opacity: 0;
+            animation: slideUp 1s ease-out 2s forwards;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .mini-feature {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 25px 20px;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .mini-feature:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .mini-feature-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4ecdc4;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mini-feature-desc {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+
+        .value-prop {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+            border-radius: 28px;
+            padding: 40px;
+            margin: 50px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 800px;
+            opacity: 0;
+            animation: slideUp 1s ease-out 2.5s forwards;
+        }
+
+        .value-prop-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #ff6b35;
+            margin-bottom: 20px;
+        }
+
+        .value-prop-text {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+
+        .countdown {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+            border-radius: 28px;
+            padding: 40px;
+            margin: 50px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            animation: slideUp 1s ease-out 3s forwards;
+            max-width: 600px;
+        }
+
+        .countdown-title {
+            color: #ffffff;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .time-unit {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 25px 18px;
+            min-width: 90px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .time-unit:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .time-number {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #ff6b35;
+            display: block;
+            text-shadow: 0 2px 10px rgba(255, 107, 53, 0.3);
+        }
+
+        .time-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        .cta-section {
+            margin: 50px 0;
+            opacity: 0;
+            animation: slideUp 1s ease-out 3.5s forwards;
+        }
+
+        .email-form {
+            display: flex;
+            gap: 15px;
+            max-width: 520px;
+            margin: 0 auto 35px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .email-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 18px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            outline: none;
+            transition: all 0.3s ease;
+            color: #2a5298;
+            font-weight: 500;
+        }
+
+        .email-input::placeholder {
+            color: rgba(42, 82, 152, 0.6);
+        }
+
+        .email-input:focus {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .notify-btn {
+            padding: 18px 35px;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+        }
+
+        .notify-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(255, 107, 53, 0.4);
+            background: linear-gradient(135deg, #f7931e 0%, #ff6b35 100%);
+        }
+
+        .notify-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .social-proof {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            margin-top: 25px;
+            font-weight: 400;
+        }
+
+        .integration-notice {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 40px;
+            max-width: 500px;
+            opacity: 0;
+            animation: slideUp 1s ease-out 4s forwards;
+        }
+
+        .integration-notice-title {
+            color: #4ecdc4;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .integration-notice-text {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .core-features {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .email-form {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .email-input {
+                min-width: 100%;
+                max-width: 350px;
+            }
+            
+            .countdown-timer {
+                gap: 15px;
+            }
+            
+            .time-unit {
+                min-width: 70px;
+                padding: 20px 12px;
+            }
+            
+            .time-number {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-elements">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
+
+    <div class="container">
+        <h1 class="logo">HIITask</h1>
+        <p class="tagline">Your Money. Your Tasks. Your Victory.</p>
+        <p class="subtitle">
+            The first productivity app that makes completing tasks more rewarding than avoiding them. 
+            Stake real money, unlock it by completing verified tasks, and build unstoppable momentum through financial commitment and AI-powered optimization.
+        </p>
+
+        <div class="core-features">
+            <div class="feature-card">
+                <span class="feature-icon">🏦</span>
+                <h3 class="feature-title">Momentum Wallet</h3>
+                <p class="feature-desc">Deposit your money into a secure virtual wallet. Funds stay locked until you complete your tasks - they never disappear, just unlock when you prove completion.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">📸</span>
+                <h3 class="feature-title">Photo & Timelapse Verification</h3>
+                <p class="feature-desc">Submit proof of completion with photos or timelapses. AI validation prevents gaming the system and ensures genuine task completion.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🧠</span>
+                <h3 class="feature-title">AI Personalization Engine</h3>
+                <p class="feature-desc">Smart task optimization, pattern recognition, and predictive scheduling that learns your peak productivity times and optimal conditions.</p>
+            </div>
+        </div>
+
+        <div class="value-prop">
+            <h3 class="value-prop-title">🔒 Your Money Never Vanishes</h3>
+            <p class="value-prop-text">
+                Unlike other apps, HIITask never takes your money away. It stays safely locked in your momentum wallet until you complete your tasks. 
+                Think of it as your own productivity safe - you hold the key, and the key is task completion.
+            </p>
+        </div>
+
+        <div class="advanced-features">
+            <h2 class="section-title">Next-Level Features</h2>
+            <div class="features-grid">
+                <div class="mini-feature">
+                    <div class="mini-feature-title">🎯 Task Fusion Reactor</div>
+                    <div class="mini-feature-desc">Combine 3+ related tasks for bonus rewards and streamlined productivity sessions.</div>
+                </div>
+                <div class="mini-feature">
+                    <div class="mini-feature-title">🎮 Points Economy</div>
+                    <div class="mini-feature-desc">Earn points alongside money unlocks. Redeem for themes, skip tokens, and premium features.</div>
+                </div>
+                <div class="mini-feature">
+                    <div class="mini-feature-title">📋 Eisenhower Matrix</div>
+                    <div class="mini-feature-desc">Built-in urgent/important categorization with AI-suggested priorities and widgets.</div>
+                </div>
+                <div class="mini-feature">
+                    <div class="mini-feature-title">🎭 Task Camouflage</div>
+                    <div class="mini-feature-desc">Reframe boring tasks with personality themes (Elon Musk mode, superhero style, etc.).</div>
+                </div>
+                <div class="mini-feature">
+                    <div class="mini-feature-title">👥 Productivity Matching</div>
+                    <div class="mini-feature-desc">Connect with like-minded productive people in your area for co-working sessions.</div>
+                </div>
+                <div class="mini-feature">
+                    <div class="mini-feature-title">🎲 Chaos Mode</div>
+                    <div class="mini-feature-desc">Randomize task order with configurable settings for novelty and spontaneous productivity.</div>
+                </div>
+                <div class="mini-feature">
+                    <div class="mini-feature-title">📊 Task DNA Analysis</div>
+                    <div class="mini-feature-desc">Deep insights into success/failure patterns with environmental factors and behavioral triggers.</div>
+                </div>
+                <div class="mini-feature">
+                    <div class="mini-feature-title">🔄 Task Recovery System</div>
+                    <div class="mini-feature-desc">Treasure hunt for abandoned tasks, smart deletion with recovery, and task evolution tracking.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="countdown">
+            <h3 class="countdown-title">🚀 Launching Soon</h3>
+            <div class="countdown-timer">
+                <div class="time-unit">
+                    <span class="time-number" id="days">365</span>
+                    <span class="time-label">Days</span>
+                </div>
+                <div class="time-unit">
+                    <span class="time-number" id="hours">12</span>
+                    <span class="time-label">Hours</span>
+                </div>
+                <div class="time-unit">
+                    <span class="time-number" id="minutes">45</span>
+                    <span class="time-label">Minutes</span>
+                </div>
+                <div class="time-unit">
+                    <span class="time-number" id="seconds">30</span>
+                    <span class="time-label">Seconds</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <!-- Simple Formspree form - emails go directly to your inbox -->
+            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="email-form" id="emailForm">
+                <input type="email" name="email" class="email-input" placeholder="Enter your email for early access & beta invites" id="emailInput" required>
+                <button type="submit" class="notify-btn">Get Notified</button>
+            </form>
+            <p class="social-proof">
+                🔥 Join 500+ productivity enthusiasts waiting for launch
+            </p>
+        </div>
+
+        <div class="integration-notice">
+            <div class="integration-notice-title">📧 Formspree Integration</div>
+            <div class="integration-notice-text">Replace YOUR_FORM_ID with your Formspree endpoint. All emails will be sent directly to your inbox. Set up in 2 minutes!</div>
+        </div>
+    </div>
+
+    <script>
+        // Set launch date to 1 year from now
+        const launchDate = new Date();
+        launchDate.setFullYear(launchDate.getFullYear() + 1);
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = launchDate.getTime() - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+
+            if (distance < 0) {
+                document.querySelector('.countdown').innerHTML = '<h3 class="countdown-title">🚀 We\'re Live!</h3>';
+            }
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Form submission handling
+        document.getElementById('emailForm').addEventListener('submit', function(e) {
+            // If Formspree is not set up yet, use localStorage for demo
+            const formAction = this.action;
+            if (formAction.includes('YOUR_FORM_ID')) {
+                e.preventDefault();
+                const email = document.getElementById('emailInput').value;
+                if (email && email.includes('@')) {
+                    const emails = JSON.parse(localStorage.getItem('hiitask_emails') || '[]');
+                    if (!emails.includes(email)) {
+                        emails.push(email);
+                        localStorage.setItem('hiitask_emails', JSON.stringify(emails));
+                        
+                        alert('🎉 Thanks! You\'ll be the first to know when HIITask launches!\n\n(Demo mode - replace YOUR_FORM_ID with your Formspree endpoint)');
+                        document.getElementById('emailInput').value = '';
+                        
+                        const proofEl = document.querySelector('.social-proof');
+                        const currentNum = parseInt(proofEl.textContent.match(/\d+/)[0]);
+                        proofEl.innerHTML = `🔥 Join ${currentNum + 1}+ productivity enthusiasts waiting for launch`;
+                    } else {
+                        alert('You\'re already signed up! We\'ll notify you when we launch.');
+                    }
+                } else {
+                    alert('Please enter a valid email address!');
+                }
+            } else {
+                // Formspree will handle the submission
+                // Show immediate feedback
+                setTimeout(() => {
+                    alert('🎉 Thanks! You\'ll be the first to know when HIITask launches!');
+                    document.getElementById('emailInput').value = '';
+                }, 100);
+            }
+        });
+
+        // Subtle mouse interaction with background elements
+        document.addEventListener('mousemove', function(e) {
+            const circles = document.querySelectorAll('.bg-circle');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            circles.forEach((circle, index) => {
+                const speed = (index + 1) * 2;
+                const xPos = x * speed;
+                const yPos = y * speed;
+                circle.style.transform = `translate(${xPos}px, ${yPos}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
